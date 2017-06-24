@@ -17,14 +17,9 @@ public class UserDetails extends Activity{
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.max_status);
-
         Intent activityThatCalled = getIntent();
-
         String status =  activityThatCalled.getExtras().getString("status");
-
         TextView statusTextView = (TextView) findViewById(R.id.status);
-
         statusTextView.setText(status);
-
     }
 }
