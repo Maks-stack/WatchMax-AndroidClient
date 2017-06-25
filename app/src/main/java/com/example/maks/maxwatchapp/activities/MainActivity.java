@@ -16,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.maks.maxwatchapp.R;
+import com.example.maks.maxwatchapp.constants.DataConstants;
 import com.example.maks.maxwatchapp.constants.UserConstants;
 import com.example.maks.maxwatchapp.models.User;
 
@@ -25,7 +26,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class WatchActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
 
     Boolean updateAvailable = true;
@@ -35,6 +36,24 @@ public class WatchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watch);
+
+        final JsonArrayRequest getMetaData = new JsonArrayRequest(Request.Method.GET, DataConstants.getMetaDataUrl, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                System.out.println(response.toString());
+                try {
+                    JSONObject metaData = response.getJSONObject(0);
+                } catch (JSONException e) {
+                    Log.v("JSON", "EXC" + e.getLocalizedMessage());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.v("API", "Err" + error.getLocalizedMessage());
+            }
+        });
+        Volley.newRequestQueue(this).add(getMetaData);
 
         if(updateAvailable) {
             OpenUpdateIntent();
