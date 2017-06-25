@@ -27,6 +27,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     Boolean updateAvailable = false;
+    String apkUrl = "";
     final ArrayList<User> userList = new ArrayList<>();
 
     @Override
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 if(updateAvailable) {
                     OpenUpdateIntent();
                 }else {
-                    OpenUserDetails();
+                    OpenUserProfileIntent();
                 }
             }
         };
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
                         Log.v("MAX", "New Version from Server : " + versionNumberFromServer + "OldVersion from Manifest : " + versionNumberFromApp);
                         updateAvailable = versionNumberFromServer > versionNumberFromApp || forceUpdate;
+                        apkUrl = metaData.getString("downloadLink");
 
                     } catch (JSONException e) {
                         Log.v("JSON", "EXC" + e.getLocalizedMessage());
@@ -83,53 +85,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void OpenUpdateIntent(){
-        Intent openDownloadDialog = new Intent(this, DownloadActivity.class); //new Intent(this, UserDetails.class);
-        openDownloadDialog.putExtra("url", "https://rawgit.com/Maksmaksmakz/WatchMax-AndroidClient/master/downloadBuild/app-debug.apk");
+        Intent openDownloadDialog = new Intent(this, DownloadActivity.class);
+        openDownloadDialog.putExtra("url", apkUrl);
         startActivity(openDownloadDialog);
-    }
-    void OpenUserDetails(){
-        final JsonArrayRequest getUsers = new JsonArrayRequest(Request.Method.GET, UserConstants.getUsersUrlDev, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                System.out.println(response.toString());
-
-                try {
-                    JSONArray users = response;
-                    for (int i = 0; i < users.length(); i++) {
-                        JSONObject user = users.getJSONObject(i);
-                        String id = user.getString("_id");
-                        String name = user.getString("name");
-                        String status = user.getString("status");
-                        Double energyLevel = user.getDouble("energyLevel");
-
-                        JSONObject position = user.getJSONObject("position");
-                        JSONObject coordinates = position.getJSONObject("coordinates");
-
-                        Double latitude = coordinates.getDouble("lat");
-                        Double longitude = coordinates.getDouble("long");
-
-                        User newUser = new User(id, name, status, energyLevel, longitude, latitude);
-
-                        userList.add(newUser);
-                        System.out.println("This is the user statuZZZZZZZZ: " + newUser.getStatus());
-                    }
-                } catch (JSONException e) {
-                    Log.v("JSON", "EXC" + e.getLocalizedMessage());
-                }
-                OpenUserProfileIntent();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.v("API", "Err" + error.getLocalizedMessage());
-            }
-        });
-        Volley.newRequestQueue(this).add(getUsers);
     }
 
     void OpenUserProfileIntent() {
-        Intent showUserDetails = new Intent(this, UserDetails.class); //new Intent(this, UserDetails.class);
-        showUserDetails.putExtra("status", userList.get(0).getStatus());
+        Intent showUserDetails = new Intent(this, DetailsMap.class);
         startActivity(showUserDetails);
     }
 
