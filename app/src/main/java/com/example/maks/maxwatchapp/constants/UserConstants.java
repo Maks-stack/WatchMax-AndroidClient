@@ -6,6 +6,7 @@ package com.example.maks.maxwatchapp.constants;
 
 public class UserConstants {
 
-    public final static String getUsersUrl = "http://max-watch-api.makshub.com/api/v1/users";
+    public final static String getUsersUrlProd = "http://max-watch-api.makshub.com/api/v1/users";
+    public final static String getUsersUrlDev = "http://10.0.2.2:8005/api/v1/users";
 
 }
