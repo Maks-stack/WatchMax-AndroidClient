@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
@@ -41,7 +42,7 @@ public class DownloadActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Log.v("MAX", "DATA DIRECTORY: " + filePath);
-                DeleteFiles();
+                DeleteOldInstallationFiles();
                 CheckPermission();
             }
         });
@@ -56,22 +57,26 @@ public class DownloadActivity extends Activity {
     }
 
     void CheckPermission() {
-        if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            } else {
+                DownloadUpdate();
+            }
         }else {
             DownloadUpdate();
         }
     }
 
-    void DeleteFiles(){
+    void DeleteOldInstallationFiles(){
         File dir = new File("/storage/emulated/0/Android/data/com.example.maks.maxwatchapp/files" + filePath);
-
         Log.v("MAX", "Dir exists: " + dir.exists());
-
-        File[] files = dir.listFiles();
-        for(int i = 0; i < files.length; i++) {
-            boolean deleted = files[i].delete();
-            Log.v("MAX", "Deleted: " + deleted);
+        if(dir.exists()) {
+            File[] files = dir.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                boolean deleted = files[i].delete();
+                Log.v("MAX", "Deleted: " + deleted);
+            }
         }
     }
 

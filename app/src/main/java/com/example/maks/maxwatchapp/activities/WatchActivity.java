@@ -16,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.maks.maxwatchapp.R;
+import com.example.maks.maxwatchapp.constants.UserConstants;
 import com.example.maks.maxwatchapp.models.User;
 
 import org.json.JSONArray;
@@ -35,12 +36,10 @@ public class WatchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watch);
 
-        String url = "http://max-watch-api.makshub.com/api/v1/users";
-
         if(updateAvailable) {
             OpenUpdateIntent();
         }else {
-            final JsonArrayRequest getUsers = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            final JsonArrayRequest getUsers = new JsonArrayRequest(Request.Method.GET, UserConstants.getUsersUrl, null, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response) {
                     System.out.println(response.toString());
