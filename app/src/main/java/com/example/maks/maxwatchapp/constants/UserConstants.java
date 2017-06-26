@@ -7,6 +7,6 @@ import com.example.maks.maxwatchapp.BuildConfig;
  */
 
 public class UserConstants {
-    public final static String getUsersUrl = BuildConfig.BASE_URL + "/api/v1/users";
-    public final static String putGpsLocation = BuildConfig.BASE_URL + "/api/v1/users/position";
+    public final static String getUsersUrl = BaseUrl.getInstance().getBaseUrl() + "/api/v1/users";
+    public final static String putGpsLocation = BaseUrl.getInstance().getBaseUrl() + "/api/v1/users/position";
 }

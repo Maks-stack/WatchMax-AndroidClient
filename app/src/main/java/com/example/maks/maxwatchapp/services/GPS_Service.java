@@ -3,6 +3,7 @@ package com.example.maks.maxwatchapp.services;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -10,8 +11,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.example.maks.maxwatchapp.data.DataService;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 /**
  * Created by Maks on 26/06/17.
@@ -21,6 +24,7 @@ public class GPS_Service extends Service {
 
     private LocationListener listener;
     private LocationManager manager;
+    private Location lastLocation;
 
     @Nullable
     @Override
@@ -35,10 +39,12 @@ public class GPS_Service extends Service {
         listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                lastLocation = location;
+
                 Intent i = new Intent("location_update");
                 i.putExtra("coordinates", location.getLongitude() + " " + location.getLatitude());
                 sendBroadcast(i);
-                DataService.getInstance().SendGpsLocation();
+                DataService.getInstance().SendGpsLocation(getBaseContext(), lastLocation.getLongitude(), lastLocation.getLatitude());
             }
 
             @Override
@@ -48,7 +54,8 @@ public class GPS_Service extends Service {
 
             @Override
             public void onProviderEnabled(String provider) {
-
+                //noinspection MissingPermission
+                lastLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             }
 
             @Override
@@ -61,6 +68,12 @@ public class GPS_Service extends Service {
 
         manager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+
+        //noinspection MissingPermission
+        manager.requestSingleUpdate(criteria, listener, null);
+
         //noinspection MissingPermission
         manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, listener);
     }
@@ -72,5 +85,9 @@ public class GPS_Service extends Service {
             //noinspection MissingPermission
             manager.removeUpdates(listener);
         }
+    }
+
+    public interface GpsDataSent {
+        void success(Boolean success);
     }
 }

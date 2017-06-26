@@ -1,13 +1,19 @@
 package com.example.maks.maxwatchapp.data;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.maks.maxwatchapp.activities.DetailsMap;
 import com.example.maks.maxwatchapp.activities.MainActivity;
@@ -15,10 +21,15 @@ import com.example.maks.maxwatchapp.constants.DataConstants;
 import com.example.maks.maxwatchapp.constants.UserConstants;
 import com.example.maks.maxwatchapp.models.MetaData;
 import com.example.maks.maxwatchapp.models.User;
+import com.example.maks.maxwatchapp.services.GPS_Service;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Maks on 26/06/17.
@@ -106,11 +117,69 @@ public class DataService {
                 Log.v("API", "Err" + error.getLocalizedMessage());
             }
         });
+        getMetaData.setRetryPolicy(new DefaultRetryPolicy(
+                30000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         Volley.newRequestQueue(context).add(getMetaData);
     }
     public MetaData GetMetaData() {return metaData;}
 
-    public void SendGpsLocation() {
+    public void SendGpsLocation(Context context, double longitude, double latitude) {
+        Log.v("MAX", "Latitude: " + latitude + " Longitude: " + longitude);
 
+        try {
+            JSONObject jsonBody = new JSONObject();
+            JSONObject coordinates = new JSONObject();
+            coordinates.put("lat",  latitude);
+            coordinates.put("long", longitude);
+
+            jsonBody.put("coordinates", coordinates);
+
+            final String requestBodyString = jsonBody.toString();
+
+            JsonObjectRequest sendGpsLocation = new JsonObjectRequest(Request.Method.PUT, UserConstants.putGpsLocation, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    try{
+                        String message = response.getString("message");
+                        Log.i("MAX", message);
+                    }catch (JSONException e){
+                        Log.v("MAX", "Exception: " + e.getLocalizedMessage());
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }) {
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+
+                @Override
+                public byte[] getBody() {
+                    try {
+                        return requestBodyString == null ? null : requestBodyString.getBytes("utf-8");
+                    } catch(UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("unsupported encoding", requestBodyString, "utf-8");
+                        return null;
+                    }
+                }
+
+                @Override
+                protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                    if(response.statusCode == 200) {
+
+                    }
+                    return super.parseNetworkResponse(response);
+                }
+            };
+            Volley.newRequestQueue(context).add(sendGpsLocation);
+        } catch(JSONException e) {
+            Log.v("MAX", e.toString());
+        }
     }
 }

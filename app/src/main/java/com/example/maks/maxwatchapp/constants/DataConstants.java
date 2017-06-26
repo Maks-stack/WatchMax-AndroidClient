@@ -7,5 +7,5 @@ import com.example.maks.maxwatchapp.BuildConfig;
  */
 
 public class DataConstants {
-    public final static String getMetaDataUrl = BuildConfig.BASE_URL + "/api/v1/metaData";
+    public final static String getMetaDataUrl = BaseUrl.getInstance().getBaseUrl() + "/api/v1/metaData";
 }

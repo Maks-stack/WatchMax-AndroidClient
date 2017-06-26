@@ -15,6 +15,7 @@ import android.widget.Button;
 
 import com.example.maks.maxwatchapp.Manifest;
 import com.example.maks.maxwatchapp.R;
+import com.example.maks.maxwatchapp.data.DataService;
 import com.example.maks.maxwatchapp.services.GPS_Service;
 
 /**
