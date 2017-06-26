@@ -91,8 +91,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void OpenUserProfileIntent() {
-        Intent showUserDetails = new Intent(this, DetailsMap.class);
-        startActivity(showUserDetails);
+        Intent showLoginScreen = new Intent(this, LoginActivity.class);
+        startActivity(showLoginScreen);
     }
 
     public interface DownloadedMetaData {

@@ -3,6 +3,8 @@
     package="com.example.maks.maxwatchapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
@@ -40,6 +42,14 @@
             android:name=".activities.DownloadActivity"
             android:label="Download Apk"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activities.LoginActivity"
+            android:label="Login Activity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activities.MaxActivity"
+            android:label="Max Activity"
+            android:theme="@style/AppTheme" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -48,13 +58,15 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/. 
         -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-
         <activity
             android:name=".activities.DetailsMap"
             android:label="@string/title_activity_details_map" />
+
+        <service android:name=".services.GPS_Service"/>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
     </application>
 
 </manifest>

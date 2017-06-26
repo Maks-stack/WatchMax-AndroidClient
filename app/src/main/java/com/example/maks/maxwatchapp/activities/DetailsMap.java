@@ -34,6 +34,7 @@ public class DetailsMap extends FragmentActivity implements OnMapReadyCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v("MAXOUTPUT", " DETAILS MAP CREATED");
         setContentView(R.layout.max_status);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -47,8 +48,7 @@ public class DetailsMap extends FragmentActivity implements OnMapReadyCallback {
             @Override
             public void success(Boolean success) {
 
-                statusTextView.setText(max.getStatus());
-                energyLevelTextView.setText(max.getEnergyLevel().toString());
+                UpdateUI();
 
                 LatLng currentPos = new LatLng(max.getLatitude(), max.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(currentPos).title("Marker in Sydney"));
@@ -57,6 +57,23 @@ public class DetailsMap extends FragmentActivity implements OnMapReadyCallback {
         };
 
         DownloadUserData(downloadedUserData);
+    }
+
+    @Override
+    protected void onStart()
+    {
+        // TODO Auto-generated method stub
+        super.onStart();
+        Log.v("MAXOUTPUT", " DETAILS MAP STARTED");
+    }
+
+
+    @Override
+    protected void onResume()
+    {
+        // TODO Auto-generated method stub
+        super.onResume();
+        Log.v("MAXOUTPUT", " DETAILS MAP RESUMED");
     }
 
     void DownloadUserData(final UserDetails.DownloadedUserData listener){
@@ -117,9 +134,12 @@ public class DetailsMap extends FragmentActivity implements OnMapReadyCallback {
         mMap.getUiSettings().setZoomGesturesEnabled(true);
     }
 
-    void MoveMap(){
+    void UpdateUI() {
         LatLng maxPosition = new LatLng(max.getLatitude(), max.getLongitude());
         mMap.addMarker(new MarkerOptions().position(maxPosition).title("Current Max"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(maxPosition));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(maxPosition, 10));
+
+        statusTextView.setText(max.getStatus());
+        energyLevelTextView.setText(max.getEnergyLevel().toString());
     }
 }
