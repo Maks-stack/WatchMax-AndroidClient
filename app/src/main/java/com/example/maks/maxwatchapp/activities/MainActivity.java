@@ -3,6 +3,7 @@ package com.example.maks.maxwatchapp.activities;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Environment;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +26,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watch);
-        Log.v("Max", "Data Constant: " + DataConstants.getMetaDataUrl);
 
         DownloadedMetaData downloadedMetaData = new DownloadedMetaData() {
             @Override
@@ -47,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         DataService.getInstance().DownloadMetaData(this, downloadedMetaData);
-
     }
 
     void CheckAvailableUpdate() {
@@ -76,7 +79,27 @@ public class MainActivity extends AppCompatActivity {
 
     void OpenUserProfileIntent() {
         Intent showLoginScreen = new Intent(this, LoginActivity.class);
-        startActivity(showLoginScreen);
+        Intent showWatchScreen = new Intent(this, DetailsMap.class);
+
+        Boolean isMax = false;
+        File file = new File(Environment.getExternalStorageDirectory() + "/maxWatchConfig" ,"config.txt");
+        if(file.exists()) {
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(file));
+                String line;
+
+                line = br.readLine();
+                br.close();
+
+                isMax = line.contains("isMax");
+
+                Log.v("MAX READER", line);
+            } catch (IOException e) {
+                //You'll need to add proper error handling here
+            }
+        }
+
+        startActivity(isMax ? showLoginScreen : showWatchScreen);
     }
 
     public interface DownloadedMetaData {
