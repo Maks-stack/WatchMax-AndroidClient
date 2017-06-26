@@ -35,10 +35,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.UserDetails"
-            android:label="User Details"
-            android:theme="@style/AppTheme" />
-        <activity
             android:name=".activities.DownloadActivity"
             android:label="Download Apk"
             android:theme="@style/AppTheme" />

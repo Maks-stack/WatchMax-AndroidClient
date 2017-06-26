@@ -11,6 +11,8 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 
+import com.example.maks.maxwatchapp.data.DataService;
+
 /**
  * Created by Maks on 26/06/17.
  */
@@ -36,6 +38,7 @@ public class GPS_Service extends Service {
                 Intent i = new Intent("location_update");
                 i.putExtra("coordinates", location.getLongitude() + " " + location.getLatitude());
                 sendBroadcast(i);
+                DataService.getInstance().SendGpsLocation();
             }
 
             @Override
