@@ -1,5 +1,6 @@
 package com.example.maks.maxwatchapp.data;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
@@ -38,6 +39,8 @@ public class DataService {
     private MetaData metaData;
     private static DataService instance = new DataService();
 
+    private ProgressDialog progressDialog;
+
     public static DataService getInstance() {
 
         return instance;
@@ -47,13 +50,14 @@ public class DataService {
 
     }
 
-    //request all the foodtrucks
+    //request all Users
     public void DownloadUserData(Context context, final DetailsMap.DownloadedUserData listener) {
-
+        ShowProgressSpinner(context);
         final JsonArrayRequest getUsers = new JsonArrayRequest(Request.Method.GET, UserConstants.usersUrl, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 System.out.println(response.toString());
+                HideProgressSpinner();
                 try {
                     JSONArray users = response;
                     for (int i = 0; i < users.length(); i++) {
@@ -79,6 +83,7 @@ public class DataService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                HideProgressSpinner();
                 Log.v("API", "Err" + error.getLocalizedMessage());
             }
         });
@@ -90,6 +95,7 @@ public class DataService {
     }
 
     public void DownloadMetaData(Context context, final MainActivity.DownloadedMetaData listener) {
+        ShowProgressSpinner(context);
         final JsonObjectRequest getMetaData = new JsonObjectRequest(Request.Method.GET, DataConstants.getMetaDataUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -106,11 +112,13 @@ public class DataService {
                 } catch (JSONException e) {
                     Log.v("JSON", "EXC" + e.getLocalizedMessage());
                 }
+                HideProgressSpinner();
                 listener.success(true);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                HideProgressSpinner();
                 Log.v("API", "Err" + error.getLocalizedMessage());
             }
         });
@@ -120,7 +128,7 @@ public class DataService {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         Volley.newRequestQueue(context).add(getMetaData);
     }
-    public MetaData GetMetaData() {return metaData;}
+    public MetaData GetMetaData() { return metaData; }
 
     public void SendGpsLocation(Context context, double longitude, double latitude) {
         Log.v("MAX", "Latitude: " + latitude + " Longitude: " + longitude);
@@ -224,6 +232,20 @@ public class DataService {
             Volley.newRequestQueue(context).add(sendToken);
         }catch(JSONException e) {
             Log.v("MAX", "Error Sending Token: " + e.toString());
+        }
+    }
+
+    private void ShowProgressSpinner(Context context) {
+
+        progressDialog= new ProgressDialog(context);
+        progressDialog.setTitle("Transfering Data");
+        progressDialog.setMessage("Please wait");
+        progressDialog.show();
+    }
+
+    private void HideProgressSpinner() {
+        if(progressDialog != null) {
+            progressDialog.hide();
         }
     }
 }

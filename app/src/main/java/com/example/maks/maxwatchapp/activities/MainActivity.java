@@ -49,19 +49,16 @@ public class MainActivity extends AppCompatActivity {
 
         RelativeLayout rlayout = (RelativeLayout) findViewById(R.id.activity_watch);
         rlayout.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                OpenUserProfileIntent();
+                CheckAvailableUpdate();
             }
-
         });
 
         DownloadedMetaData downloadedMetaData = new DownloadedMetaData() {
             @Override
             public void success(Boolean success) {
                 metaData = DataService.getInstance().GetMetaData();
-                CheckAvailableUpdate();
             }
         };
         DataService.getInstance().DownloadMetaData(this, downloadedMetaData);
