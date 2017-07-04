@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "571424061220",
+    "firebase_url": "https://superb-vigil-171815.firebaseio.com",
+    "project_id": "superb-vigil-171815",
+    "storage_bucket": "superb-vigil-171815.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:571424061220:android:18206631c1df205c",
+        "android_client_info": {
+          "package_name": "com.example.maks.maxwatchapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "571424061220-p831688tr4o2s6fr9fo44lp12euo648g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUB29ZMCWGqzM9IlMzHxhQ678KOyxcVCY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

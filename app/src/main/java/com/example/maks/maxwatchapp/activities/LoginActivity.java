@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.maks.maxwatchapp.R;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
 
 /**
  * Created by Maks on 25/06/17.
@@ -25,6 +28,9 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.login_activity);
 
         Boolean isMax = (Environment.getExternalStorageDirectory() + "/maxWatchConfig").contains("isMax");
+
+        FirebaseMessaging.getInstance().subscribeToTopic("test");
+        FirebaseInstanceId.getInstance().getToken();
 
         loginMax = (Button) findViewById(R.id.maxButton);
         loginWatch = (Button) findViewById(R.id.watchButton);

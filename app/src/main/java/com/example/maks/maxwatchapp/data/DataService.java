@@ -1,6 +1,5 @@
 package com.example.maks.maxwatchapp.data;
 
-import android.app.DownloadManager;
 import android.content.Context;
 import android.util.Log;
 
@@ -18,18 +17,16 @@ import com.android.volley.toolbox.Volley;
 import com.example.maks.maxwatchapp.activities.DetailsMap;
 import com.example.maks.maxwatchapp.activities.MainActivity;
 import com.example.maks.maxwatchapp.constants.DataConstants;
+import com.example.maks.maxwatchapp.constants.FireBaseConstants;
 import com.example.maks.maxwatchapp.constants.UserConstants;
 import com.example.maks.maxwatchapp.models.MetaData;
 import com.example.maks.maxwatchapp.models.User;
-import com.example.maks.maxwatchapp.services.GPS_Service;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Maks on 26/06/17.
@@ -53,7 +50,7 @@ public class DataService {
     //request all the foodtrucks
     public void DownloadUserData(Context context, final DetailsMap.DownloadedUserData listener) {
 
-        final JsonArrayRequest getUsers = new JsonArrayRequest(Request.Method.GET, UserConstants.getUsersUrl, null, new Response.Listener<JSONArray>() {
+        final JsonArrayRequest getUsers = new JsonArrayRequest(Request.Method.GET, UserConstants.usersUrl, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 System.out.println(response.toString());
@@ -172,7 +169,7 @@ public class DataService {
                 @Override
                 protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
                     if(response.statusCode == 200) {
-
+                        Log.v("MAX", "SUCCESS GPS" + response);
                     }
                     return super.parseNetworkResponse(response);
                 }
@@ -180,6 +177,53 @@ public class DataService {
             Volley.newRequestQueue(context).add(sendGpsLocation);
         } catch(JSONException e) {
             Log.v("MAX", e.toString());
+        }
+    }
+
+    public void SendFireBaseToken(Context context, String token){
+        try {
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("token", token);
+
+            final String requestBodyString = jsonBody.toString();
+
+            StringRequest sendToken = new StringRequest(Request.Method.POST, FireBaseConstants.tokenUrl, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.v("MAX", response);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.v("MAX", "VOLLEY ERROR: " + error);
+                }
+            }) {
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return requestBodyString == null ? null : requestBodyString.getBytes("utf-8");
+                    } catch(UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("unsupported encoding", requestBodyString, "utf-8");
+                        return null;
+                    }
+                }
+
+                @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                    if(response.statusCode == 200) {
+                        Log.v("MAX", "SUCCESS GPS" + response);
+                    }
+                    return super.parseNetworkResponse(response);
+                }
+            };
+            Volley.newRequestQueue(context).add(sendToken);
+        }catch(JSONException e) {
+            Log.v("MAX", "Error Sending Token: " + e.toString());
         }
     }
 }
