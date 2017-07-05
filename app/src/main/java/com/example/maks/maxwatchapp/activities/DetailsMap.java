@@ -13,6 +13,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.maks.maxwatchapp.R;
 import com.example.maks.maxwatchapp.constants.UserConstants;
 import com.example.maks.maxwatchapp.data.DataService;
+import com.example.maks.maxwatchapp.models.Message;
 import com.example.maks.maxwatchapp.models.User;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,11 +26,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class DetailsMap extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private TextView statusTextView;
     private TextView energyLevelTextView;
+    private TextView messageTextView;
     User max;
 
     @Override
@@ -44,6 +48,7 @@ public class DetailsMap extends FragmentActivity implements OnMapReadyCallback {
 
         statusTextView = (TextView) findViewById(R.id.status);
         energyLevelTextView = (TextView) findViewById(R.id.energyLevelTextView);
+        messageTextView = (TextView) findViewById(R.id.message);
 
         DetailsMap.DownloadedUserData downloadedUserData = new DetailsMap.DownloadedUserData() {
             @Override
@@ -97,5 +102,12 @@ public class DetailsMap extends FragmentActivity implements OnMapReadyCallback {
 
         statusTextView.setText(max.getStatus());
         energyLevelTextView.setText(max.getEnergyLevel().toString());
+        ArrayList<Message> messages = max.getMessages();
+        Log.v("MAX DetailsMap line 106", "Messages Length: " + messages.size());
+        if(messages.size() > 0) {
+            messageTextView.setText(messages.get(messages.size() - 1).getText());
+        }else {
+            messageTextView.setText("Herp derpsum dee pee, ler herpler derp merp serp berp. Herpy dee nerpy perper ner sherp. Herderder derpsum ler derperker berp derpy! Herpler herpy merp dee sherlamer terpus, tee berps me perper? Derp sherlamer me herpler dee. Terp tee sherp perp terpus merp me ler derperker. Perper sherlamer derpy terpus dee sherp der herpderpsmer derpsum perp. Mer berp terp me tee nerpy. Derp derps terp dee derperker ter ler herpler perp. Derpy terpus sherpus ner sherp mer berp derp. Nerpy ter herpy, mer derps.");
+        }
     }
 }

@@ -1,73 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/gradient">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_pattern"
+    android:fillViewport="true"
+    android:clipToPadding="false">
 
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            <TextView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf ="@+id/include"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf ="parent"
+                android:layout_width="320dp"
 
-        <TextView
-            android:text="Status:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView2"
-            android:layout_marginStart="16dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginTop="120dp"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/MaxWatchFont"
-            android:theme="@style/MaxWatchFont" />
+                android:layout_marginTop="@dimen/topBottommargin"
+                android:layout_marginBottom="@dimen/topBottommargin"
+                android:layout_marginLeft="@dimen/sidesmargin"
+                android:layout_marginRight="@dimen/sidesmargin"
+                android:padding="30dp"
 
-        <TextView
-            android:text="5"
-            style="@style/MaxWatchFont"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/energyLevelTextView"
-            android:layout_marginStart="8dp"
-            app:layout_constraintTop_toTopOf="@+id/textView4"
-            app:layout_constraintLeft_toRightOf="@+id/textView4" />
+                style="@style/MaxWatchFont"
+                android:background="@color/medium"
+                android:layout_height="wrap_content"
+                android:id="@+id/message"
+                android:text="Herp derpsum dee pee, ler herpler derp merp serp berp. Herpy dee nerpy perper ner sherp. Herderder derpsum ler derperker berp derpy! Herpler herpy merp dee sherlamer terpus, tee berps me perper? Derp sherlamer me herpler dee. Terp tee sherp perp terpus merp me ler derperker. Perper sherlamer derpy terpus dee sherp der herpderpsmer derpsum perp. Mer berp terp me tee nerpy. Derp derps terp dee derperker ter ler herpler perp."
+                app:layout_constraintVertical_bias="0.0"
+                android:layout_marginStart="@dimen/sidesmargin"
+                android:layout_marginEnd="@dimen/sidesmargin"
+                android:textSize="7pt" />
 
-        <TextView
-            android:text="EnergyLevel:"
-            style="@style/MaxWatchFont"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView4"
-            android:layout_marginStart="16dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginTop="88dp"
-            app:layout_constraintTop_toTopOf="parent" />
+            <include layout="@layout/activity_details_map"
 
-        <TextView
-            android:text="Alive"
-            style="@style/MaxWatchFont"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/status"
-            android:layout_marginStart="8dp"
-            app:layout_constraintLeft_toRightOf="@+id/textView2"
-            app:layout_constraintTop_toTopOf="@+id/textView2"
-            app:layout_constraintBottom_toBottomOf="@+id/textView2"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintHorizontal_bias="0.01"
-            app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toBottomOf ="@+id/message"
+                app:layout_constraintBottom_toTopOf ="@+id/statusContainer"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf ="parent"
+                android:layout_width="320dp"
 
-        <include layout="@layout/activity_details_map"
-            android:layout_width="347dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.97"
-            android:layout_height="328dp" />
-    </android.support.constraint.ConstraintLayout>
-</LinearLayout>
+                android:layout_marginTop="@dimen/topBottommargin"
+                android:layout_marginBottom="@dimen/topBottommargin"
+                android:layout_marginLeft="@dimen/sidesmargin"
+                android:layout_marginRight="@dimen/sidesmargin"
+
+                android:id="@+id/include"
+                app:layout_constraintVertical_bias="0.0"
+                android:layout_marginStart="@dimen/sidesmargin"
+                android:layout_marginEnd="@dimen/sidesmargin"
+                android:layout_height="320dp" />
+
+            <RelativeLayout
+                app:layout_constraintTop_toBottomOf ="@+id/include"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf ="parent"
+                android:layout_width="320dp"
+
+                android:layout_marginTop="@dimen/topBottommargin"
+                android:layout_marginBottom="@dimen/topBottommargin"
+                android:layout_marginLeft="@dimen/sidesmargin"
+                android:layout_marginRight="@dimen/sidesmargin"
+
+                android:padding="30dp"
+
+                android:background="@color/darkest"
+                android:layout_height="300dp"
+                android:id="@+id/statusContainer"
+                android:layout_marginStart="@dimen/sidesmargin"
+                android:layout_marginEnd="@dimen/sidesmargin">
+
+                <TextView
+                    android:text="Status:"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView2"
+                    style="@style/MaxWatchFont"
+                    android:theme="@style/MaxWatchFont"
+                    tools:layout_editor_absoluteY="0dp"
+                    tools:layout_editor_absoluteX="0dp" />
+
+                <TextView
+                    android:text="Alive"
+                    style="@style/MaxWatchFont"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/status"
+                    tools:layout_editor_absoluteY="0dp"
+                    tools:layout_editor_absoluteX="323dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="77dp" />
+
+                <TextView
+                    android:text="EnergyLevel:"
+                    style="@style/MaxWatchFont"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView4"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="0dp"
+                    android:layout_below="@+id/textView2"
+                    android:layout_alignParentStart="true" />
+
+                <TextView
+                    android:text="5"
+                    style="@style/MaxWatchFont"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/energyLevelTextView"
+                    tools:layout_editor_absoluteY="0dp"
+                    tools:layout_editor_absoluteX="0dp"
+                    android:layout_alignBaseline="@+id/textView4"
+                    android:layout_alignBottom="@+id/textView4"
+                    android:layout_alignStart="@+id/status"
+                    android:layout_marginStart="38dp" />
+            </RelativeLayout>
+
+        </android.support.constraint.ConstraintLayout>
+</ScrollView>

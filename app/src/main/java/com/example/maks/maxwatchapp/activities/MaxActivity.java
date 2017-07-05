@@ -8,12 +8,15 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.maks.maxwatchapp.R;
+import com.example.maks.maxwatchapp.data.DataService;
 import com.example.maks.maxwatchapp.services.GPS_Service;
 
 /**
@@ -24,6 +27,9 @@ public class MaxActivity extends Activity {
 
     private Button startGpsButton;
     private Button stopGpsButton;
+
+    private EditText messageField;
+    private Button sendMessageButton;
 
     private BroadcastReceiver broadCastReceiver;
 
@@ -51,6 +57,17 @@ public class MaxActivity extends Activity {
 
         startGpsButton = (Button) findViewById(R.id.startGpsService);
         stopGpsButton = (Button) findViewById(R.id.stopGpsService);
+
+        messageField = (EditText) findViewById(R.id.messageInput);
+        sendMessageButton = (Button) findViewById(R.id.sendMessage);
+
+        sendMessageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("Max", "message: " + messageField.getText());
+                DataService.getInstance().SendMessage(getBaseContext(), messageField.getText().toString());
+            }
+        });
 
         if(!RuntimePermissions()) {
             EnableButtons();

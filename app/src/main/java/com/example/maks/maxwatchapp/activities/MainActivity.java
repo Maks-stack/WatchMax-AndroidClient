@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -19,11 +20,14 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.maks.maxwatchapp.R;
+import com.example.maks.maxwatchapp.constants.BaseUrl;
 import com.example.maks.maxwatchapp.constants.DataConstants;
 import com.example.maks.maxwatchapp.constants.UserConstants;
 import com.example.maks.maxwatchapp.data.DataService;
+import com.example.maks.maxwatchapp.helpers.Helpers;
 import com.example.maks.maxwatchapp.models.MetaData;
 import com.example.maks.maxwatchapp.models.User;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,9 +55,16 @@ public class MainActivity extends AppCompatActivity {
         rlayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CheckAvailableUpdate();
+                if(Helpers.isNetworkAvailable(getBaseContext())) {
+                    CheckAvailableUpdate();
+                }else{
+                    Toast.makeText(getBaseContext(), "No Internet bro!",
+                            Toast.LENGTH_LONG).show();
+                }
             }
         });
+
+        Log.v("MAX", "FIREBASE TOKEN: " + FirebaseInstanceId.getInstance().getToken());
 
         DownloadedMetaData downloadedMetaData = new DownloadedMetaData() {
             @Override
@@ -108,6 +119,9 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 //You'll need to add proper error handling here
             }
+        }
+        if(Helpers.isEmulator()){
+            isMax = true;
         }
 
         startActivity(isMax ? showLoginScreen : showWatchScreen);
