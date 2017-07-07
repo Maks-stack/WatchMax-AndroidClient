@@ -3,8 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="sidesmargin">20dp</dimen>
-    <dimen name="topBottommargin">20dp</dimen>
+    <dimen name="sidesmargin">10dp</dimen>
+    <dimen name="topBottommargin">10dp</dimen>
 
     <dimen name="maxWidth">320dp</dimen>
 </resources>

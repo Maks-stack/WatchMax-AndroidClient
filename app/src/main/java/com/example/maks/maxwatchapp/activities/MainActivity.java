@@ -1,16 +1,21 @@
 package com.example.maks.maxwatchapp.activities;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.ContactsContract;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -51,6 +56,13 @@ public class MainActivity extends AppCompatActivity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_watch);
 
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Pacifico-Regular.ttf");
+        TextView textView = (TextView)findViewById(R.id.logoMax);
+        textView.setTypeface(typeface);
+        //typeface = Typeface.createFromAsset(getAssets(), "fonts/Avenir-Next-Condensed.ttc");
+        //textView = (TextView)findViewById(R.id.logoWatch);
+        //textView.setTypeface(typeface);
+
         RelativeLayout rlayout = (RelativeLayout) findViewById(R.id.activity_watch);
         rlayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +88,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void CheckAvailableUpdate() {
+
+        if(metaData == null) {
+            return;
+        }
+
         Integer versionNumberFromApp = 0;
         Integer versionNumberFromServer = metaData.getVersionNumber();
         try {
@@ -105,23 +122,31 @@ public class MainActivity extends AppCompatActivity {
 
         Boolean isMax = false;
         File file = new File(Environment.getExternalStorageDirectory() + "/maxWatchConfig" ,"config.txt");
-        if(file.exists()) {
-            try {
-                BufferedReader br = new BufferedReader(new FileReader(file));
-                String line;
 
-                line = br.readLine();
-                br.close();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+            } else {
+                if(file.exists()) {
+                    try {
+                        BufferedReader br = new BufferedReader(new FileReader(file));
+                        String line = br.readLine();
+                        br.close();
 
-                isMax = line.contains("isMax");
+                        isMax = line.contains("isMax");
 
-                Log.v("MAX READER", line);
-            } catch (IOException e) {
-                //You'll need to add proper error handling here
+                        Log.v("MAX READER", line);
+                    } catch (IOException e) {
+                        Log.v("MAX", "What?");
+                        //You'll need to add proper error handling here
+                    }
+                }
+                if(Helpers.isEmulator()){
+                    isMax = true;
+                }
             }
-        }
-        if(Helpers.isEmulator()){
-            isMax = true;
+        }else {
+            isMax = false;
         }
 
         startActivity(isMax ? showLoginScreen : showWatchScreen);

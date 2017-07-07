@@ -12,12 +12,48 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.maks.maxwatchapp.activities.MainActivity">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/logo"
-        android:layout_marginTop="90dp"
-        android:id="@+id/imageView2"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="13dp">
+
+        <TextView
+            android:text="MAX"
+            android:textSize="80dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/logoMax"
+            android:textColor="#ff7440"
+            android:textScaleX="0.8"
+            android:textAlignment="center"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.39" />
+
+        <TextView
+            android:text="WATCH"
+            android:textSize="100dp"
+            android:textColor="#cc2c15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/logoWatch"
+            android:textAlignment="center"
+            android:textScaleX="0.6"
+            android:layout_alignTop="@+id/logoMax"
+            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintVertical_bias="0.6"
+            android:layout_marginTop="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="16dp" />
+    </android.support.constraint.ConstraintLayout>
 </RelativeLayout>

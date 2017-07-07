@@ -1,7 +1,9 @@
 package com.example.maks.maxwatchapp.data;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -57,7 +59,7 @@ public class DataService {
     }
 
     //request all Users
-    public void DownloadUserData(Context context, final DetailsMap.DownloadedUserData listener) {
+    public void DownloadUserData(final Context context, final DetailsMap.DownloadedUserData listener) {
         ShowProgressSpinner(context);
 
         messages = new ArrayList<Message>();
@@ -89,6 +91,7 @@ public class DataService {
             @Override
             public void onErrorResponse(VolleyError error) {
                 HideProgressSpinner();
+                ShowAlertDialog(context, error.toString());
                 Log.v("API", "Err" + error.getLocalizedMessage());
             }
         });
@@ -125,6 +128,7 @@ public class DataService {
             @Override
             public void onErrorResponse(VolleyError error) {
                 HideProgressSpinner();
+                ShowAlertDialog(context, error.toString());
                 Log.v("API", "Err" + error.getLocalizedMessage());
             }
         });
@@ -149,7 +153,7 @@ public class DataService {
         return max;
     }
 
-    public void DownloadMetaData(Context context, final MainActivity.DownloadedMetaData listener) {
+    public void DownloadMetaData(final Context context, final MainActivity.DownloadedMetaData listener) {
         ShowProgressSpinner(context);
         final JsonObjectRequest getMetaData = new JsonObjectRequest(Request.Method.GET, DataConstants.getMetaDataUrl, null, new Response.Listener<JSONObject>() {
             @Override
@@ -173,6 +177,7 @@ public class DataService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                ShowAlertDialog(context, error.toString());
                 HideProgressSpinner();
                 Log.v("API", "Err" + error.getLocalizedMessage());
             }
@@ -350,8 +355,8 @@ public class DataService {
 
         HideProgressSpinner();
         progressDialog= new ProgressDialog(context);
-        progressDialog.setTitle("Transfering Data");
-        progressDialog.setMessage("Please wait");
+        progressDialog.setTitle("Lade Daten runter!");
+        progressDialog.setMessage("Geht ganz schnell.");
         progressDialog.show();
     }
 
@@ -359,5 +364,22 @@ public class DataService {
         if(progressDialog != null) {
             progressDialog.dismiss();
         }
+    }
+
+    private void ShowAlertDialog(Context context, String text) {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+        builder1.setMessage(text);
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "Try Again",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 }

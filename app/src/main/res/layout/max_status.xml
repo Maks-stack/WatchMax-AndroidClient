@@ -5,20 +5,19 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/background_pattern"
-    android:fillViewport="true"
-    android:clipToPadding="false">
+    android:background="@color/lightest">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <TextView
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf ="@+id/include"
+                app:layout_constraintBottom_toTopOf ="@+id/statusContainer"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf ="parent"
                 android:layout_width="320dp"
+                android:layout_height="wrap_content"
 
                 android:layout_marginTop="@dimen/topBottommargin"
                 android:layout_marginBottom="@dimen/topBottommargin"
@@ -27,37 +26,17 @@
                 android:padding="30dp"
 
                 style="@style/MaxWatchFont"
-                android:background="@color/medium"
-                android:layout_height="wrap_content"
+                android:background="@color/secondLight"
                 android:id="@+id/message"
-                android:text="Herp derpsum dee pee, ler herpler derp merp serp berp. Herpy dee nerpy perper ner sherp. Herderder derpsum ler derperker berp derpy! Herpler herpy merp dee sherlamer terpus, tee berps me perper? Derp sherlamer me herpler dee. Terp tee sherp perp terpus merp me ler derperker. Perper sherlamer derpy terpus dee sherp der herpderpsmer derpsum perp. Mer berp terp me tee nerpy. Derp derps terp dee derperker ter ler herpler perp."
-                app:layout_constraintVertical_bias="0.0"
+                android:text=" "
+                android:textSize="20dp"
+                android:layout_weight="1"
                 android:layout_marginStart="@dimen/sidesmargin"
-                android:layout_marginEnd="@dimen/sidesmargin"
-                android:textSize="7pt" />
-
-            <include layout="@layout/activity_details_map"
-
-                app:layout_constraintTop_toBottomOf ="@+id/message"
-                app:layout_constraintBottom_toTopOf ="@+id/statusContainer"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf ="parent"
-                android:layout_width="320dp"
-
-                android:layout_marginTop="@dimen/topBottommargin"
-                android:layout_marginBottom="@dimen/topBottommargin"
-                android:layout_marginLeft="@dimen/sidesmargin"
-                android:layout_marginRight="@dimen/sidesmargin"
-
-                android:id="@+id/include"
-                app:layout_constraintVertical_bias="0.0"
-                android:layout_marginStart="@dimen/sidesmargin"
-                android:layout_marginEnd="@dimen/sidesmargin"
-                android:layout_height="320dp" />
+                android:layout_marginEnd="@dimen/sidesmargin" />
 
             <RelativeLayout
-                app:layout_constraintTop_toBottomOf ="@+id/include"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf ="@+id/message"
+                app:layout_constraintBottom_toTopOf="@+id/include"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf ="parent"
                 android:layout_width="320dp"
@@ -69,7 +48,7 @@
 
                 android:padding="30dp"
 
-                android:background="@color/darkest"
+                android:background="@color/secondLight"
                 android:layout_height="300dp"
                 android:id="@+id/statusContainer"
                 android:layout_marginStart="@dimen/sidesmargin"
@@ -84,18 +63,6 @@
                     android:theme="@style/MaxWatchFont"
                     tools:layout_editor_absoluteY="0dp"
                     tools:layout_editor_absoluteX="0dp" />
-
-                <TextView
-                    android:text="Alive"
-                    style="@style/MaxWatchFont"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/status"
-                    tools:layout_editor_absoluteY="0dp"
-                    tools:layout_editor_absoluteX="323dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="77dp" />
 
                 <TextView
                     android:text="EnergyLevel:"
@@ -120,7 +87,38 @@
                     android:layout_alignBottom="@+id/textView4"
                     android:layout_alignStart="@+id/status"
                     android:layout_marginStart="38dp" />
+
+                <TextView
+                    android:text="Alive"
+                    style="@style/MaxWatchFont"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/status"
+                    tools:layout_editor_absoluteY="0dp"
+                    tools:layout_editor_absoluteX="323dp"
+                    android:layout_alignBaseline="@+id/textView2"
+                    android:layout_alignBottom="@+id/textView2"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="74dp" />
             </RelativeLayout>
+
+            <include layout="@layout/activity_details_map"
+
+                app:layout_constraintTop_toBottomOf ="@+id/statusContainer"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf ="parent"
+                android:layout_width="320dp"
+
+                android:layout_marginTop="@dimen/topBottommargin"
+                android:layout_marginBottom="@dimen/topBottommargin"
+                android:layout_marginLeft="@dimen/sidesmargin"
+                android:layout_marginRight="@dimen/sidesmargin"
+
+                android:id="@+id/include"
+                android:layout_height="320dp"
+                android:layout_marginStart="@dimen/sidesmargin"
+                android:layout_marginEnd="@dimen/sidesmargin" />
 
         </android.support.constraint.ConstraintLayout>
 </ScrollView>
